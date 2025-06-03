@@ -73,7 +73,7 @@ button:hover {
     cursor: pointer;
 }
 #prev-button {
-    color: #ffffff00;
+    color: #ffffff00; 
     cursor: pointer;
 }
 #next-button {
@@ -81,7 +81,20 @@ button:hover {
     cursor: pointer;
 }
 #volume-slider {
-    
-
-
+    cursor: pointer;
+    width:200px;
+}
+.lyrics {
+    position:fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    width:50%;
+    text-align: center;
+}
+.lyrics-holder {
+    display:flex;
+    align-items: center;
+    position:fixed;
+    bottom: 55%;
+    font-size: 2em;
 }
