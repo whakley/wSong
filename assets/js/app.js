@@ -12,6 +12,7 @@ async function fetchData() {
     console.error("Error fetching data:", error);
 }
 }
+
 let spotify_access_token = "";
 async function fetchArtistData(artistId) {
     try {
@@ -30,38 +31,58 @@ async function fetchArtistData(artistId) {
 async function main() {
     const spotify_token = await fetchData(); 
     spotify_access_token = spotify_token.access_token;
-    
-        // Ready
-    player.addListener('ready', ({ device_id }) => {
-        console.log('Ready with Device ID', device_id);
-    });
+}
+main();
 
-    // Not Ready
-    player.addListener('not_ready', ({ device_id }) => {
-        console.log('Device ID has gone offline', device_id);
-    });
-    player.addListener('initialization_error', ({ message }) => {
-        console.error(message);
-    });
-
-    player.addListener('authentication_error', ({ message }) => {
-        console.error(message);
-    });
-
-    player.addListener('account_error', ({ message }) => {
-        console.error(message);
-    });
-    player.connect();
+async function getOAuthToken() {
+    try {
+        const response = await fetch('http://localhost:3000/auth/token');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        return data.access_token;
+    } catch (error) {
+        console.error('Error fetching OAuth token:', error);
+    }
 }
 window.onSpotifyWebPlaybackSDKReady = () => {
-        const token = spotify_access_token;
-        player = new Spotify.Player({
-        name: 'Web Playback SDK Quick Start Player',
-        getOAuthToken: cb => { cb(token); },
-        volume: 0.5
-    	});
-    	}
-main(); 
+            const token = getOAuthToken();
+            const player = new Spotify.Player({
+                name: 'Web Playback SDK Quick Start Player',
+                getOAuthToken: cb => { cb(token); },
+                volume: 0.5
+            });
+
+            // Ready
+            player.addListener('ready', ({ device_id }) => {
+                console.log('Ready with Device ID', device_id);
+            });
+
+            // Not Ready
+            player.addListener('not_ready', ({ device_id }) => {
+                console.log('Device ID has gone offline', device_id);
+            });
+
+            player.addListener('initialization_error', ({ message }) => {
+                console.error(message);
+            });
+
+            player.addListener('authentication_error', ({ message }) => {
+                console.error(message);
+            });
+
+            player.addListener('account_error', ({ message }) => {
+                console.error(message);
+            });
+
+            document.getElementById('play-button').onclick = function() {
+              player.togglePlay();
+            };
+
+            player.connect();
+        }
+ 
 
 play_button = document.getElementById("play-button");
 play_button.addEventListener("click", function() {
