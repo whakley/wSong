@@ -34,22 +34,21 @@ async function main() {
 }
 main();
 
-async function getOAuthToken() {
-    try {
-        const response = await fetch('http://localhost:3000/auth/token');
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        console.log('OAuth token fetched successfully:', data);
-        return data.access_token;
-    } catch (error) {
-        console.error('Error fetching OAuth token:', error);
-    }
-}
+// async function getOAuthToken() {
+//     try {
+//         const response = await fetch('http://localhost:3000/auth/token');
+//         if (!response.ok) {
+//             throw new Error('Network response was not ok');
+//         }
+//         const data = await response.json();
+//         console.log('OAuth token fetched successfully:', data);
+//         return data.access_token;
+//     } catch (error) {
+//         console.error('Error fetching OAuth token:', error);
+//     }
+// }
 window.onSpotifyWebPlaybackSDKReady = () => {
-            getOAuthToken()
-            const token = "BQCedP4eLRpbjJHiekvy3ZHNg6jfSdJWZ8wqlbAjqK2P9O62AJj_OQd5Ll-Nu63UhDDj1X-4dHAz2hqy0Ife2rjH_27wkLGBhUHbSUAuNGrcIbeHLdt1JI577-0w4To3rGcnfD6E1t9EVre3VCVO1tL7dbqA93GtsMpHQo8w0h7Lo6W06zb11NyyrDLVTDp1vjYtsbkdUaA6YWnHH5PgHc82bLevOewSj45LjPvpdgWJXFEQR5bRIiqW0OUa1zoXHl2mLVo2";
+            const token = new URLSearchParams(window.location.search).get('access_token');
             const player = new Spotify.Player({
                 name: 'Web Playback SDK Quick Start Player',
                 getOAuthToken: cb => { cb(token); },
