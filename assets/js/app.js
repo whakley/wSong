@@ -34,22 +34,21 @@ async function main() {
 }
 main();
 
-// async function getOAuthToken() {
-//     try {
-//         const response = await fetch('http://localhost:3000/auth/token');
-//         if (!response.ok) {
-//             throw new Error('Network response was not ok');
-//         }
-//         const data = await response.json();
-//         console.log('OAuth token fetched successfully:', data);
-//         return data.access_token;
-//     } catch (error) {
-//         console.error('Error fetching OAuth token:', error);
-//     }
-// }
+async function getOAuthToken() {
+    try {
+        const response = await fetch('http://localhost:3000/auth/token');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log('OAuth token fetched successfully:', data);
+        return data.access_token;
+    } catch (error) {
+        console.error('Error fetching OAuth token:', error);
+    }
+}
 window.onSpotifyWebPlaybackSDKReady = () => {
-            const token = fetch("auth/token").then(response => {
-                token = response;});
+            const token = getOAuthToken();
             const player = new Spotify.Player({
                 name: 'Web Playback SDK Quick Start Player',
                 getOAuthToken: cb => { cb(token); },
