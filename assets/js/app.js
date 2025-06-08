@@ -48,7 +48,8 @@ main();
 //     }
 // }
 window.onSpotifyWebPlaybackSDKReady = () => {
-            const token = new URLSearchParams(window.location.search).get('access_token');
+            const token = fetch("auth/token").then(response => {
+                token = response;});
             const player = new Spotify.Player({
                 name: 'Web Playback SDK Quick Start Player',
                 getOAuthToken: cb => { cb(token); },
