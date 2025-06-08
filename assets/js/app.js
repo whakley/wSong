@@ -38,6 +38,7 @@ async function getOAuthToken() {
     try {
         const response = await fetch('http://localhost:3000/auth/token');
         if (!response.ok) {
+            console.log(response);
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
